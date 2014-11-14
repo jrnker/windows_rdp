@@ -3,6 +3,10 @@ windows_rdp CHANGELOG
 
 This file is used to list changes made in each version of the windows_rdp cookbook.
 
+0.1.2
+-----
+- jrnker - 
+
 0.1.1
 -----
 - jrnker - Fixing foodcritic stuff

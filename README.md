@@ -10,13 +10,13 @@ Attributes
 ----------
 #### windows_rdp::default
  
-Key             |&nbsp;&nbsp;&nbsp;&nbsp;|Type|&nbsp;&nbsp;&nbsp;&nbsp;|Description|&nbsp;&nbsp;&nbsp;&nbsp;|Default 
-:---------------------------------------||:--------------------------||:-----------------------------------||:-------------
-`['windows_rdp']['Configure']`          ||Boolean                    ||Enable RDP configuration            ||false 
-`['windows_rdp']['AllowConnections']`   ||String, 'yes' 'no' 'leave' ||Allow RDP connections               ||'yes' 
-`['windows_rdp']['AllowOnlyNLA']`       ||String, 'yes' 'no' 'leave' ||Allow only NLA connections          ||'leave' 
-`['windows_rdp']['ConfigureFirewall']`  ||String, 'yes' 'no' 'leave' ||Configure Windows Firewall for RDP  ||'yes' 
-`['windows_rdp']['AddUsers']`           ||array[tbd]                 ||tbd                                 ||tbd 
+|Key             |&nbsp;&nbsp;&nbsp;&nbsp;|Type|&nbsp;&nbsp;&nbsp;&nbsp;|Description|&nbsp;&nbsp;&nbsp;&nbsp;|Default 
+|:---------------------------------------||:--------------------------||:-----------------------------------||:-------------
+|`['windows_rdp']['Configure']`          ||Boolean                    ||Enable RDP configuration            ||false 
+|`['windows_rdp']['AllowConnections']`   ||String, 'yes' 'no' 'leave' ||Allow RDP connections               ||'yes' 
+|`['windows_rdp']['AllowOnlyNLA']`       ||String, 'yes' 'no' 'leave' ||Allow only NLA connections          ||'leave' 
+|`['windows_rdp']['ConfigureFirewall']`  ||String, 'yes' 'no' 'leave' ||Configure Windows Firewall for RDP  ||'yes' 
+|`['windows_rdp']['AddUsers']`           ||array[tbd]                 ||tbd                                 ||tbd 
 
  Usage
 -----
