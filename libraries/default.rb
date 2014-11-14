@@ -28,3 +28,33 @@ end
 def getReg(hive,key)
 	return registry_get_values(hive).find_all{|item| item[:name] == key}[0][:data]
 end
+
+def linfo(data)
+        if $showlog == true
+                Chef::Log.info(data)
+        else
+                Chef::Log.debug(data)
+        end
+end
+
+# Run and return data
+def r_d(data_cmd) 
+    cmd = Mixlib::ShellOut.new(data_cmd)
+    cmd.run_command 
+    return cmd.stdout 
+end
+
+# Run and return array
+def r_a(data_cmd) 
+    data = r_d(data_cmd)
+    if data != nil
+      if data.include? "\n" 
+        data = data.split(/\n/)
+      else 
+        data2 = Array.new
+        data2[0] = data.stdout
+        data = data2
+      end
+    end
+    return data
+end
