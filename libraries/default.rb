@@ -14,17 +14,6 @@
 # :dword_big_endian for REG_DWORD_BIG_ENDIAN
 # :qword for REG_QWORD
 
-def setReg(hive,key,type,data)  
-      registry_key hive do
-        values [{
-          :name => key,
-          :type => type ,
-          :data => data
-          }]
-          action :create 
-      end
-end
-
 def getReg(hive,key)
 	return registry_get_values(hive).find_all{|item| item[:name] == key}[0][:data]
 end
