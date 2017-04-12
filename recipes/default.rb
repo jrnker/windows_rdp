@@ -42,7 +42,6 @@ if node['windows_rdp']['Configure'] == true
 		name = data[1].strip!
 		fwrule = r_a('netsh advfirewall firewall show rule name="' + name + '"')
 
-		
 		inrule = false
 		inport = false
 		enabled = false
@@ -78,33 +77,54 @@ if node['windows_rdp']['Configure'] == true
 
  	if AllowConnections == 'yes' && DenyConnections == 1
  		 Chef::Log.info("Enabling RDP connections")
- 		 setReg(DenyConnectionsHive,DenyConnectionsKey,:dword,0)
  	end
 
  	if AllowConnections == 'no' && DenyConnections == 0
  		 Chef::Log.info("Disabling RDP connections")
- 		 setReg(DenyConnectionsHive,DenyConnectionsKey,:dword,1)
  	end
 
+	registry_key DenyConnectionsHive do
+		values [{
+			:name => DenyConnectionsKey,
+			:type => :dword,
+			:data => (AllowConnections == 'yes' && DenyConnections == 1) ? 0 : 1
+		}]
+		action :create
+		only_if {(AllowConnections == 'no' && DenyConnections == 0) || (AllowConnections == 'yes' && DenyConnections == 1)}
+	end
+	
+	
  	if AllowOnlyNLA == 'yes' && NLA == 0
  		 Chef::Log.info("Enforcing NLA for RDP connections")
- 		 setReg(NLAHive,NLAKey,:dword,1) 
  	end
-
+	
  	if AllowOnlyNLA == 'no' && NLA == 1
  		 Chef::Log.info("Allowing non-NLA RDP connections")
- 		 setReg(NLAHive,NLAKey,:dword,0) 
+ 	end
+	
+	registry_key NLAHive do
+		values [{
+			:name => NLAKey,
+			:type => :dword,
+			:data => (AllowOnlyNLA == 'yes' && NLA == 0) ? 1 : 0
+		}]
+		action :create
+		only_if {(AllowOnlyNLA == 'no' && NLA == 1) || (AllowOnlyNLA == 'yes' && NLA == 0)}
+	end
+	
+	if ConfigureFirewall == 'yes' && fwRuleActive == false
+ 		 Chef::Log.info("Enabling firewall RDP connections")
  	end
 
-	if ConfigureFirewall == 'yes' && fwRuleActive == false
- 		Chef::Log.info("Enabling firewall RDP connections")
-		Mixlib::ShellOut.new('netsh advfirewall firewall set rule group="remote desktop" new enable=Yes')
-	end
+	if ConfigureFirewall == 'no' && fwRuleActive == true
+ 		 Chef::Log.info("Disabling firewall RDP connections")
+ 	end
 
-	if ConfigureFirewall == 'no' && fwRuleActive == true 
- 		Chef::Log.info("Disabling firewall RDP connections")
-		Mixlib::ShellOut.new('netsh advfirewall firewall set rule group="remote desktop" new enable=No')
+	execute 'Set firewall for RDP connections' do
+		command <<-EOH
+		netsh advfirewall firewall set rule group="remote desktop" new enable= #{(ConfigureFirewall == 'yes' && fwRuleActive == false) ? 'Yes' : 'No'}
+		EOH
+		only_if {(ConfigureFirewall == 'yes' && fwRuleActive == false) || (ConfigureFirewall == 'no' && fwRuleActive == true)}
 	end
-
 
 end
