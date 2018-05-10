@@ -5,7 +5,9 @@ This file is used to list changes made in each version of the windows_rdp cookbo
 
 0.1.2
 -----
-- jrnker - 
+- mwheway - Fix tabs and whitespace
+          - Replace "linfo" with "puts" for more proper output
+          - Corrected "showlog" logic to work properly
 
 0.1.1
 -----
