@@ -1,0 +1,37 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  # You may wish to disable always updating cookbooks in CI or other testing environments.
+  # For example:
+  #   always_update_cookbooks: <%= !ENV['CI'] %>
+  always_update_cookbooks: true
+  retry_on_exit_code:
+     - 35 # 35 is the exit code signaling that the node is rebooting
+  wait_for_retry: 120
+  max_retries: 3
+
+verifier:
+  name: inspec
+
+transport:
+  name: winrm
+  elevated: true
+  elevated_username: SYSTEM
+  elevated_password:
+
+platforms:
+  - name: windows-2012r2
+    driver_config:
+      box_url: E:\\VMs\\vbox\\windows2012r2min-virtualbox.box
+
+suites:
+  - name: default
+    run_list:
+      - recipe[windows_rdp::default]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
